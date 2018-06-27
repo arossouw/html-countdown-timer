@@ -1,0 +1,3 @@
+A basic html countdown timer in elm
+
+Execute elm-make Main.elm --output=elm.js to compile
