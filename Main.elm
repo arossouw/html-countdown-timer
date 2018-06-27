@@ -37,24 +37,24 @@ view model =
     in 
     text (String.join ":" (List.map toString [hour, minute, second]))
 -}
-
-
-view : Model -> Html msg
-view model =
+countDownTimer : Int -> Html msg
+countDownTimer count =
     let
-        hour   = if (model.count  // 3600) < 10 then
-                    "0" ++ toString (model.count  // 3600)
-                 else
-                     toString (model.count  // 3600)
-        minute = if ((model.count % 3600) // 60) < 10 then
-                    "0" ++ toString ((model.count % 3600) // 60)
-                 else
-                    toString ((model.count % 3600) // 60)
-        second = if (model.count % 60) < 10 then
-                    "0" ++ toString (model.count % 60)
-                 else
-                    toString (model.count % 60)
-    in
+        second = 
+          count % 60
+           |> toString
+           |> String.padLeft 2 '0'
+
+        minute = 
+          (count % 3600) // 60
+           |> toString
+           |> String.padLeft 2 '0'
+
+        hour = 
+          (count  // 3600)
+           |> toString
+           |> String.padLeft 2 '0'
+     in
         div [ class "countDown" ]
           [ span [ id "hours" ]
             [ text hour ]
@@ -63,8 +63,12 @@ view model =
           , span [ id "seconds" ]
              [ text second ]
           , text ""
-    ]
+        ]
 
+view : Model -> Html msg
+view model =
+     countDownTimer model.count
+      
 main : Program Never Model Msg
 main =
     Html.program
